@@ -7,7 +7,7 @@ class kaleidoscope {
   include git
 
   git::config::global { "difftool \"Kaleidoscope\".cmd":
-    value => "ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\""
+    value => "ksdiff-wrapper git \"\$LOCAL\" \"\$REMOTE\""
   }
 
   git::config::global { "diff.tool":
@@ -17,6 +17,13 @@ class kaleidoscope {
   file { "${boxen::config::bindir}/ksdiff":
     ensure  => link,
     target  => '/Applications/Kaleidoscope.app/Contents/Resources/bin/ksdiff',
+    mode    => 0755,
+    require => Package['Kaleidoscope'],
+  }
+
+  file { "${boxen::config::bindir}/ksdiff-wrapper":
+    ensure  => link,
+    target  => '/Applications/Kaleidoscope.app/Contents/Resources/bin/ksdiff-wrapper',
     mode    => 0755,
     require => Package['Kaleidoscope'],
   }
